@@ -29,3 +29,5 @@ jobs:
       - uses: r-lib/actions/check-r-package@v2
       - name: Run dataset
         run: Rscript datascript.R
+      - name: Run tests
+        run: Rscript testthat.R
