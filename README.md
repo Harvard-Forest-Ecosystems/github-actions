@@ -1,3 +1,9 @@
+ <!-- badges: start -->
+  [![R-CMD-check](https://github.com/Harvard-Forest-Ecosystems/github-actions/workflows/R-CMD-check/badge.svg)](https://github.com/Harvard-Forest-Ecosystems/github-actions/actions)
+  <!-- badges: end -->
+
+
+
 [![License](http://i.creativecommons.org/p/zero/1.0/88x31.png)](https://raw.githubusercontent.com/weecology/livedat/master/LICENSE)
 
 # livedat with GitHub Actions
