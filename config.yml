@@ -6,5 +6,5 @@ repo: Harvard-Forest-Ecosystems/Dendrometer
 # Generally you want these to be different from your user account so it is clear
 # which commits are automated.
 deploy_email: "nhegwood@college.harvard.edu"
-deploy_username: "nhegwood"
+deploy_username: "nhegwood5"
 ---
