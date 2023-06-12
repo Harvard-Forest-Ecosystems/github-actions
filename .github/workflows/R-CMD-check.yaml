@@ -10,10 +10,10 @@ name: R-CMD-check
 
 jobs:
   R-CMD-check:
-    runs-on: ubuntu-latest
+    runs-on: macOS-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      R_KEEP_PKG_SOURCE: yes
+      # R_KEEP_PKG_SOURCE: yes
     steps:
       - uses: actions/checkout@v3
 
@@ -21,10 +21,10 @@ jobs:
         with:
           use-public-rspm: true
 
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: any::rcmdcheck
-          needs: check
+      #- uses: r-lib/actions/setup-r-dependencies@v2
+       # with:
+         # extra-packages: any::rcmdcheck
+         # needs: check
 
       - uses: r-lib/actions/check-r-package@v2
       - name: Run dataset
