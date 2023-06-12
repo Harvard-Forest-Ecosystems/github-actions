@@ -11,8 +11,6 @@ Authors@R: c(
     )
 Depends: R (>= 4.0.1)
 Imports:
-  testthat,
-  readr,
-  dplyr
+  testthat
 URL: https://github.com/weecology/livedat-github-actions
 BugReports: https://github.com/weecology/livedat-github-actions/issues
