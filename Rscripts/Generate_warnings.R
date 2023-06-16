@@ -201,7 +201,7 @@ max_caliper_width <- 200
 
 # Find stems with error
 stems_to_alert <- dendroband_measurements %>%
-  filter(!between(measure, min_caliper_width, max_caliper_width))
+  filter(!between(dend, min_caliper_width, max_caliper_width))
 
 # Append to report
 warning_file <- stems_to_alert %>%
