@@ -1,0 +1,96 @@
+# Set the list of files that when modified will trigger GitHub Actions
+# (GA) continuous integration (CI) to run
+
+# For a video tutorial explaining these steps for the similarly structured
+# SCBI mortality census (https://github.com/SCBI-ForestGEO/SCBImortality),
+# click this link to YouTube: https://youtu.be/JKF6aXtdLHs
+
+on:
+  push:
+    paths:
+      - 'data-raw/**'
+      - 'Rscripts/Generate_reports.R'
+      - 'Rscripts/Generate_warnings.R'
+      - 'README.Rmd'
+  pull_request:
+    paths:
+      - 'data-raw/**'
+      - 'Rscripts/Generate_reports.R'
+      - 'Rscripts/Generate_warnings.R'
+      - 'README.Rmd'
+
+# Name the workflow as it will appear on GA status page
+# https://github.com/SCBI-ForestGEO/Dendrobands/actions
+name: QA_QC_checks
+
+jobs:
+  QA_QC_checks:
+    # Set the operating system CI assumes:
+    runs-on: macOS-latest
+    
+    # Allow only authorized collaborators to trigger GA:
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      
+    # All steps in workflow:
+    steps:
+      # Housekeeping: Use various GA tools, install R, install pandoc
+      # (to be able to use RMarkdown)
+      - uses: actions/checkout@v3
+      - uses: r-lib/actions/setup-r@v2
+      - uses: r-lib/actions/setup-pandoc@v2
+           
+      
+      # Housekeeping: Install all packages listed in DESCRIPTION file
+      - name: Install dependencies
+        run: |
+          install.packages(c("remotes", "rcmdcheck", "rmarkdown"))
+          remotes::install_deps(dependencies = TRUE)
+        shell: Rscript {0}
+      
+      # Housekeeping: Run package check (may not be needed)
+      - name: Check
+        run: |
+          options(crayon.enabled = TRUE)
+          rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
+        shell: Rscript {0}
+      
+      # Test for data collection errors that require field fixes, outputs
+      # saved in testthat/reports/
+      - name: Generate error reports
+        id: generate_error_reports
+        run: |
+          source("Rscripts/Generate_reports.R")
+        shell: Rscript {0}
+      
+      # Test for warnings, outputs saved in testthat/reports/
+      - name: Generate warning reports
+        id: generate_warning_reports
+        run: |
+          source("Rscripts/Generate_warnings.R")
+        shell: Rscript {0}
+      
+      # Recompute annual summaries in results/dendro_trees_dbhcount/
+      - name: Recompute annual summaries
+        run: |
+          source("Rscripts/analysis/dendrotrees_by_sp-survey-dbh.R")
+        shell: Rscript {0}
+      
+      # Update dashboard: repository README.md front page  
+      - name: Update README
+        run: |
+          Rscript -e 'rmarkdown::render("README.Rmd")'
+          rm README.html
+
+      # Commit and push all new files, assigned to GA bot
+      - name: Commit and push all new files
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add --all || echo "No changes to commit"
+          git commit -m "Added/modified files and updated README" || echo "No changes to commit"
+          git push origin
+      
+      # Use testthat package to issue notifications of any data collection errors
+      - name: Are there any data collection?
+        run: Rscript testthat.R
