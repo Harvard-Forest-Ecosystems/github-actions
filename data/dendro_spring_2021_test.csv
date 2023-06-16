@@ -1,6 +1,6 @@
 plot,tag,jday,year,spp,dend.num,ref.dend,ref.dbh,prev.dend,dend,dbh,notes,ref.notes
 A1,1,132,2021,yb,4,14.51,19.4,19.35,19.59,,,NA
-A1,2,132,2021,rm,1,91.17,36.6,116.86,115.72,35.3,"delete previous DBH, probably from flaky bark",rm next
+A1,2,132,2021,rm,1,91.17,36.6,116.86,115.72,,"delete previous DBH, probably from flaky bark",rm next
 A1,2,132,2021,rm,2,NA,NA,10.41,10.43,35.3,,DBH next
 A1,6,132,2021,rm,3,64.49,35.1,80.38,80.06,,,NA
 A1,8,132,2021,yb,3,26.95,27,35.17,,,,NA
