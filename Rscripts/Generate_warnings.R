@@ -171,57 +171,57 @@ require_field_fix_error_file <- stems_to_alert %>%
 
 
 
-## Error: Anomaly detection for biannual: Is difference between new & previous measurement too big (unless new band is installed)? ----
-alert_name <- "new_measure_too_different_from_previous_biannual"
-
-if(!is.na(dendroband_measurements$dend)){
-  # Compute +/- 3SD of growth by species: used to detect anomalous growth below
-  previous_year_growth_by_sp <- dendroband_measurements_all_years %>%
-    # Only previous year spring and fall biannual values
-    filter(year == previous_year) %>%
-    filter(jday < 150 || jday > 260) %>%
-    # Compute growth
-    group_by(tag) %>%
-    mutate(growth = dend - lag(dend)) %>%
-    filter(!is.na(growth)) %>%
-    slice(n()) %>%
-    # 99.7% of values i.e. +/- 3 SD
-    group_by(sp) %>%
-    summarize(lower = quantile(growth, probs = 0.003/2), upper = quantile(growth, probs = 1-0.003/2), n = n()) %>%
-    arrange(desc(n))
-
-  # Get all measures that have been verified during fall survey
-  #verified_measures <-
-  #  fall_biannual_survey %>%
-  #  read_csv(show_col_types = FALSE) %>%
-  #  filter(measure_verified) %>%
-  #  select(tag, stemtag, sp, survey.ID, measure_verified)
-
-  # Get all stems to alert
-  stems_to_alert <- dendroband_measurements %>%
-    filter(survey.ID %in% c(spring_biannual_survey_ID, fall_biannual_survey_ID)) %>%
-    # Compute growth
-    group_by(tag, stemtag) %>%
-    mutate(growth = measure - lag(measure)) %>%
-    filter(!is.na(growth)) %>%
-    slice(n()) %>%
-    # See if growth is in 99.7% confidence interval
-    left_join(previous_year_growth_by_sp, by = "sp") %>%
-    mutate(measure_is_reasonable = between(growth, lower, upper)) %>%
-    filter(!measure_is_reasonable) %>%
-    # See if measure was verified, if so drop
-    left_join(verified_measures, by = c("tag", "stemtag", "sp", "survey.ID")) %>%
-    mutate(measure_verified = ifelse(is.na(measure_verified), FALSE, measure_verified)) %>%
-    filter(!measure_verified)
-
-  # Append to report
-  require_field_fix_error_file <- stems_to_alert %>%
-    mutate(alert_name = alert_name) %>%
-    select(alert_name, all_of(orig_master_data_var_names)) %>%
-    bind_rows(require_field_fix_error_file)
-}
-
-
+### Error: Anomaly detection for biannual: Is difference between new & previous measurement too big (unless new band is installed)? ----
+#alert_name <- "new_measure_too_different_from_previous_biannual"
+#
+#if(!is.na(dendroband_measurements$dend)){
+#  # Compute +/- 3SD of growth by species: used to detect anomalous growth below
+#  previous_year_growth_by_sp <- dendroband_measurements_all_years %>%
+#    # Only previous year spring and fall biannual values
+#    filter(year == previous_year) %>%
+#    filter(jday < 150 || jday > 260) %>%
+#    # Compute growth
+#    group_by(tag) %>%
+#    mutate(growth = dend - lag(dend)) %>%
+#    filter(!is.na(growth)) %>%
+#    slice(n()) %>%
+#    # 99.7% of values i.e. +/- 3 SD
+#    group_by(sp) %>%
+#    summarize(lower = quantile(growth, probs = 0.003/2), upper = quantile(growth, probs = 1-0.003/2), n = n()) %>%
+#    arrange(desc(n))
+#
+#  # Get all measures that have been verified during fall survey
+#  #verified_measures <-
+#  #  fall_biannual_survey %>%
+#  #  read_csv(show_col_types = FALSE) %>%
+#  #  filter(measure_verified) %>%
+#  #  select(tag, stemtag, sp, survey.ID, measure_verified)
+#
+#  # Get all stems to alert
+#  stems_to_alert <- dendroband_measurements %>%
+#    filter(survey.ID %in% c(spring_biannual_survey_ID, fall_biannual_survey_ID)) %>%
+#    # Compute growth
+#    group_by(tag, stemtag) %>%
+#    mutate(growth = measure - lag(measure)) %>%
+#    filter(!is.na(growth)) %>%
+#    slice(n()) %>%
+#    # See if growth is in 99.7% confidence interval
+#    left_join(previous_year_growth_by_sp, by = "sp") %>%
+#    mutate(measure_is_reasonable = between(growth, lower, upper)) %>%
+#    filter(!measure_is_reasonable) %>%
+#    # See if measure was verified, if so drop
+#    left_join(verified_measures, by = c("tag", "stemtag", "sp", "survey.ID")) %>%
+#    mutate(measure_verified = ifelse(is.na(measure_verified), FALSE, measure_verified)) %>%
+#    filter(!measure_verified)
+#
+#  # Append to report
+#  require_field_fix_error_file <- stems_to_alert %>%
+#    mutate(alert_name = alert_name) %>%
+#    select(alert_name, all_of(orig_master_data_var_names)) %>%
+#    bind_rows(require_field_fix_error_file)
+#}
+#
+#
 # Display anomalies (if any) in README
 #anomaly_plot_filename <- here("testthat/reports/measurement_anomalies.png")
 #
