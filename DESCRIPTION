@@ -13,6 +13,12 @@ Depends: R (>= 4.0.1)
 Imports:
   testthat,
   dplyr,
-  readr
+  readr,
+  here,
+  stringr,
+  purrr,
+  ggplot2,
+  lubridate,
+  epitools
 URL: https://github.com/weecology/livedat-github-actions
 BugReports: https://github.com/weecology/livedat-github-actions/issues
