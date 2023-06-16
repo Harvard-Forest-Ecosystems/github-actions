@@ -36,6 +36,9 @@ for(i in 1:length(master_data_filenames)){
     )
 }
 
+## FOR TESTING
+#dendroband_measurements_all_years <- read_csv("dendro_spring_2021.csv")
+
 # Set years
 current_year <- Sys.Date() %>% year()
 previous_year <- current_year - 1
@@ -43,14 +46,9 @@ previous_year <- current_year - 1
 # Get variable names (needed to write csv's consisting of only original variables)
 orig_master_data_var_names <- names(dendroband_measurements_all_years)
 
-# Add date column
-
-dendroband_measurements_all_years$date <- julian2date(dendroband_measurements_all_years$jday)
-
 # Run tests only on data from current year onwards
 dendroband_measurements <- dendroband_measurements_all_years %>%
-  filter(date > ymd(str_c(current_year, "-01-01")))
-
+  filter(year == 2021)#current_year)
 
 # Run all tests & checks ----
 # prepare report files
@@ -59,72 +57,8 @@ will_auto_fix_error_file <- NULL
 warning_file <- NULL
 
 
-
-## Error: Is day possible? ----
-alert_name <- "day_not_possible"
-
-# Find stems with error
-stems_to_alert <- dendroband_measurements %>%
-  mutate(
-    day_possible =
-      case_when(
-        month == 1 ~ between(day, 1, 31) & !is.na(day),
-        month == 2 ~ between(day, 1, 29) & !is.na(day),
-        month == 3 ~ between(day, 1, 31) & !is.na(day),
-        month == 4 ~ between(day, 1, 30) & !is.na(day),
-        month == 5 ~ between(day, 1, 31) & !is.na(day),
-        month == 6 ~ between(day, 1, 30) & !is.na(day),
-        month == 7 ~ between(day, 1, 31) & !is.na(day),
-        month == 8 ~ between(day, 1, 31) & !is.na(day),
-        month == 9 ~ between(day, 1, 30) & !is.na(day),
-        month == 10 ~ between(day, 1, 31) & !is.na(day),
-        month == 11 ~ between(day, 1, 30) & !is.na(day),
-        month == 12 ~ between(day, 1, 31) & !is.na(day),
-        TRUE ~ FALSE
-      )
-  ) %>%
-  filter(!day_possible)
-
-# Append to report
-require_field_fix_error_file <- stems_to_alert %>%
-  mutate(alert_name = alert_name) %>%
-  select(alert_name, all_of(orig_master_data_var_names)) %>%
-  bind_rows(require_field_fix_error_file)
-
-
-
-## Error: Is month is possible? ----
-alert_name <- "month_not_possible"
-
-# Find stems with error
-stems_to_alert <- dendroband_measurements %>%
-  filter(!between(month, 1, 12) | is.na(month))
-
-# Append to report
-require_field_fix_error_file <- stems_to_alert %>%
-  mutate(alert_name = alert_name) %>%
-  select(alert_name, all_of(orig_master_data_var_names)) %>%
-  bind_rows(require_field_fix_error_file)
-
-
-
-## Error: Is year possible? ----
-alert_name <- "year_not_possible"
-
-# Find stems with error
-stems_to_alert <- dendroband_measurements %>%
-  filter(!between(year, 1993, current_year) | is.na(year))
-
-# Append to report
-require_field_fix_error_file <- stems_to_alert %>%
-  mutate(alert_name = alert_name) %>%
-  select(alert_name, all_of(orig_master_data_var_names)) %>%
-  bind_rows(require_field_fix_error_file)
-
-
-
 ## Error: Status of stem is 1) not missing and 2) is "alive" or "dead"? ----
-alert_name <- "status_not_valid"
+#alert_name <- "status_not_valid"
 
 # Find stems with error
 #stems_to_alert <- dendroband_measurements %>%
