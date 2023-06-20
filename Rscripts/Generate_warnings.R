@@ -263,7 +263,7 @@ if(nrow(warning_file) != 0){
   # Clean & sort report
   warning_file <- warning_file %>%
     filter(!is.na(tag)) %>%
-    arrange(alert_name, quadrat, tag, stemtag)
+    arrange(alert_name, tag)
 
   # Write report
   warning_file %>%
