@@ -78,10 +78,10 @@ jobs:
         # shell: Rscript {0}
       
       # Update dashboard: repository README.md front page  
-      - name: Update README
-        run: |
-          Rscript -e 'rmarkdown::render("README.Rmd")'
-          rm README.html
+      #- name: Update README
+        #run: |
+         # Rscript -e 'rmarkdown::render("README.Rmd")'
+         # rm README.html
 
       # Commit and push all new files, assigned to GA bot
       #- name: Commit and push all new files
