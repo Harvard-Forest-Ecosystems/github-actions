@@ -83,7 +83,6 @@ stems_to_alert <- dendroband_measurements %>%
 # Append to report
 require_field_fix_error_file <- stems_to_alert %>%
   mutate(alert_name = alert_name) %>%
-  select(alert_name, all_of(orig_master_data_var_names)) %>%
   bind_rows(require_field_fix_error_file)
 
 
@@ -100,7 +99,6 @@ stems_to_alert <- dendroband_measurements %>%
 # Append to report
 require_field_fix_error_file <- stems_to_alert %>%
   mutate(alert_name = alert_name) %>%
-  select(alert_name, all_of(orig_master_data_var_names)) %>%
   bind_rows(require_field_fix_error_file)
 
 
@@ -206,7 +204,6 @@ stems_to_alert <- dendroband_measurements %>%
 # Append to report
 warning_file <- stems_to_alert %>%
   mutate(alert_name = alert_name) %>%
-  select(alert_name, all_of(orig_master_data_var_names)) %>%
   bind_rows(warning_file)
 
 
