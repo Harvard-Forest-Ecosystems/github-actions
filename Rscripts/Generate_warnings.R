@@ -48,7 +48,7 @@ orig_master_data_var_names <- names(dendroband_measurements_all_years)
 
 # Run tests only on data from current year onwards
 dendroband_measurements <- dendroband_measurements_all_years %>%
-  filter(year == 2021)#current_year)
+  filter(year == 2020)#current_year)
 
 # Run all tests & checks ----
 # prepare report files
