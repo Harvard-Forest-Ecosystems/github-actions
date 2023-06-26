@@ -25,22 +25,22 @@ library(lubridate)
 library(epitools)
 
 ## Load all master data files into a single data frame
-#master_data_filenames <- dir(path = here("data"), pattern = "dendro*", full.names = TRUE)
+master_data_filenames <- list.files(path="data")#dir(path = here("data"), pattern = "dendro*", full.names = TRUE)
 
-#dendroband_measurements_all_years <- NULL
-#for(i in 1:length(master_data_filenames)){
-#  dendroband_measurements_all_years <-
-#    bind_rows(
-#      dendroband_measurements_all_years,
-#      read_csv(master_data_filenames[i])
-#    )
-#}
+dendroband_measurements_all_years <- NULL
+for(i in 1:length(master_data_filenames)){
+  dendroband_measurements_all_years <-
+    bind_rows(
+      dendroband_measurements_all_years,
+      read_csv(master_data_filenames[i])
+    )
+}
 
 ## FOR TESTING
-dendroband_measurements_all_years <- read_csv("data/dendro_04_17_20.csv")
+# dendroband_measurements_all_years <- read_csv("data/dendro_04_17_20.csv")
 
 # Set years
-current_year <- Sys.Date() %>% year()
+current_year <- 2021 #Sys.Date() %>% year()
 previous_year <- 2020#current_year - 1
 
 # Get variable names (needed to write csv's consisting of only original variables)
