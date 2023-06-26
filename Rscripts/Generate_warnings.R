@@ -40,14 +40,14 @@ for(i in 1:length(master_data_filenames)){
 #dendroband_measurements_all_years <- read_csv("dendro_spring_2021.csv")
 
 # Set years
-current_year <- Sys.Date() %>% year()
-previous_year <- current_year - 1
+#current_year <- Sys.Date() %>% year()
+#previous_year <- current_year - 1
 
 # Get variable names (needed to write csv's consisting of only original variables)
 orig_master_data_var_names <- names(dendroband_measurements_all_years)
 
 # Run tests only on data from current year onwards
-#dendroband_measurements <- dendroband_measurements_all_years %>%
+dendroband_measurements <- dendroband_measurements_all_years #%>%
  # filter(year == 2021)#current_year)
 
 # Run all tests & checks ----
