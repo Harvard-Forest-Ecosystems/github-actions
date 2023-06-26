@@ -223,9 +223,9 @@ if(nrow(require_field_fix_error_file) != 0){
   # If any field fix errors exist:
 
   # Clean & sort report
-  #require_field_fix_error_file <- require_field_fix_error_file %>%
-    #filter(!is.na(tag)) %>%
-    #arrange(plot, tag)
+  require_field_fix_error_file <- require_field_fix_error_file %>%
+    filter(!is.na(tag)) %>%
+    arrange(plot, tag)
 
   # Write report
   require_field_fix_error_file %>%
