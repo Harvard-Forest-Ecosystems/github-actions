@@ -25,7 +25,7 @@ library(lubridate)
 library(epitools)
 
 ## Load all master data files into a single data frame
-master_data_filenames <- list.files(path="data")#dir(path = here("data"), pattern = "dendro*", full.names = TRUE)
+master_data_filenames <- dir(path = here("data"), full.names = TRUE) #list.files(path="data")#dir(path = here("data"), pattern = "dendro*", full.names = TRUE)
 
 dendroband_measurements_all_years <- NULL
 for(i in 1:length(master_data_filenames)){
