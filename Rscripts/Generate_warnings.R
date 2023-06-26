@@ -25,16 +25,8 @@ library(lubridate)
 library(epitools)
 
 ## Load all master data files into a single data frame
-<<<<<<< Updated upstream
-master_data_filenames <- dir(path = here("data"), full.names = TRUE) #list.files(path="data")#dir(path = here("data"), pattern = "dendro*", full.names = TRUE)
-=======
-<<<<<<< HEAD
-master_data_filenames <- dir(path = here("data"), full.names = TRUE)
-=======
-master_data_filenames <- dir(path = here("data"), full.names = TRUE) #list.files(path="data")#dir(path = here("data"), pattern = "dendro*", full.names = TRUE)
->>>>>>> 1ea81083597ca2423f65e5ac6601478407fb3cf9
->>>>>>> Stashed changes
 
+master_data_filenames <- dir(path = here("data"), full.names = TRUE) #list.files(path="data")#dir(path = here("data"), pattern = "dendro*", full.names = TRUE)
 dendroband_measurements_all_years <- NULL
 for(i in 1:length(master_data_filenames)){
   dendroband_measurements_all_years <-
