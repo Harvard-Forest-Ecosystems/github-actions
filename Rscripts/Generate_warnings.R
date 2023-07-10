@@ -37,15 +37,15 @@ for(i in 1:length(master_data_filenames)){
 }
 
 # Set years
-current_year <- 2021 #Sys.Date() %>% year()
-previous_year <- 2020#current_year - 1
+current_year <- 2022 #Sys.Date() %>% year()
+previous_year <- 2021#current_year - 1
 
 # Get variable names (needed to write csv's consisting of only original variables)
 orig_master_data_var_names <- names(dendroband_measurements_all_years)
 
 # Run tests only on data from current year onwards
 dendroband_measurements <- dendroband_measurements_all_years %>%
-  filter(year == 2021)#current_year)
+  filter(year == 2022)#current_year)
 
 # Run all tests & checks ----
 # prepare report files
