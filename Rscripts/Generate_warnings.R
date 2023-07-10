@@ -26,7 +26,7 @@ library(epitools)
 
 ## Load all master data files into a single data frame
 
-master_data_filenames <- dir(path = here("data"), full.names = TRUE) #list.files(path="data")#dir(path = here("data"), pattern = "dendro*", full.names = TRUE)
+master_data_filenames <- dir(path = "data", full.names = TRUE)
 dendroband_measurements_all_years <- NULL
 for(i in 1:length(master_data_filenames)){
   dendroband_measurements_all_years <-
@@ -35,9 +35,6 @@ for(i in 1:length(master_data_filenames)){
       read_csv(master_data_filenames[i])
     )
 }
-
-## FOR TESTING
-# dendroband_measurements_all_years <- read_csv("data/dendro_04_17_20.csv")
 
 # Set years
 current_year <- 2021 #Sys.Date() %>% year()
@@ -55,7 +52,6 @@ dendroband_measurements <- dendroband_measurements_all_years %>%
 require_field_fix_error_file <- NULL
 will_auto_fix_error_file <- NULL
 warning_file <- NULL
-
 
 ## Error: Status of stem is 1) not missing and 2) is "alive" or "dead"? ----
 #alert_name <- "status_not_valid"
@@ -104,91 +100,54 @@ require_field_fix_error_file <- stems_to_alert %>%
 
 
 ### Error: Anomaly detection for biannual: Is difference between new & previous measurement too big (unless new band is installed)? ----
-#alert_name <- "new_measure_too_different_from_previous_biannual"
-#
-#if(!is.na(dendroband_measurements$dend)){
-#  # Compute +/- 3SD of growth by species: used to detect anomalous growth below
-#  previous_year_growth_by_sp <- dendroband_measurements_all_years %>%
-#    # Only previous year spring and fall biannual values
-#    filter(year == previous_year) %>%
-#    filter(jday < 150 || jday > 260) %>%
-#    # Compute growth
-#    group_by(tag) %>%
-#    mutate(growth = dend - lag(dend)) %>%
-#    filter(!is.na(growth)) %>%
-#    slice(n()) %>%
-#    # 99.7% of values i.e. +/- 3 SD
-#    group_by(sp) %>%
-#    summarize(lower = quantile(growth, probs = 0.003/2), upper = quantile(growth, probs = 1-0.003/2), n = n()) %>%
-#    arrange(desc(n))
-#
-#  # Get all measures that have been verified during fall survey
-#  #verified_measures <-
-#  #  fall_biannual_survey %>%
-#  #  read_csv(show_col_types = FALSE) %>%
-#  #  filter(measure_verified) %>%
-#  #  select(tag, stemtag, sp, survey.ID, measure_verified)
-#
-#  # Get all stems to alert
-#  stems_to_alert <- dendroband_measurements %>%
-#    filter(survey.ID %in% c(spring_biannual_survey_ID, fall_biannual_survey_ID)) %>%
-#    # Compute growth
-#    group_by(tag, stemtag) %>%
-#    mutate(growth = measure - lag(measure)) %>%
-#    filter(!is.na(growth)) %>%
-#    slice(n()) %>%
-#    # See if growth is in 99.7% confidence interval
-#    left_join(previous_year_growth_by_sp, by = "sp") %>%
-#    mutate(measure_is_reasonable = between(growth, lower, upper)) %>%
-#    filter(!measure_is_reasonable) %>%
-#    # See if measure was verified, if so drop
-#    left_join(verified_measures, by = c("tag", "stemtag", "sp", "survey.ID")) %>%
-#    mutate(measure_verified = ifelse(is.na(measure_verified), FALSE, measure_verified)) %>%
-#    filter(!measure_verified)
-#
-#  # Append to report
-#  require_field_fix_error_file <- stems_to_alert %>%
-#    mutate(alert_name = alert_name) %>%
-#    select(alert_name, all_of(orig_master_data_var_names)) %>%
-#    bind_rows(require_field_fix_error_file)
-#}
-#
-#
-# Display anomalies (if any) in README
-#anomaly_plot_filename <- here("testthat/reports/measurement_anomalies.png")
-#
-#anamoly_dendroband_measurements <- dendroband_measurements %>%
-#  filter(!is.na(measure) & tag %in% stems_to_alert$tag) %>%
-#  mutate(stemtag = factor(stemtag)) %>%
-#  mutate(tag_sp = str_c(tag, ": ", sp))
-#
-#if(nrow(anamoly_dendroband_measurements) > 0){
-#  anomaly_plot <- anamoly_dendroband_measurements %>%
-#    ggplot(aes(x = date, y = measure, col = stemtag)) +
-#    geom_point() +
-#    geom_line() +
-#    geom_point(data = stems_to_alert, col = "black", size = 4, shape = 18) +
-#    facet_wrap(~tag_sp, scales = "free_y") +
-#    theme_bw() +
-#    geom_vline(data = anamoly_dendroband_measurements %>% filter(new.band == 1), aes(xintercept = date)) +
-#    labs(
-#      x = "Biweekly survey date",
-#      y = "Measure recorded",
-#      title = "Stems with an anomalous measure: abs diff > 10mm, marked with diamond",
-#      subtitle = "Dashed line = CI activation date, solid lines (if any) = new band install date"
-#    )
-#
-#  ggsave(
-#    filename = anomaly_plot_filename,
-#    plot = anomaly_plot,
-#    device = "png",
-#    width = 16 / 2, height = (16/2)*(7/8),
-#    units = "in", dpi = 300
-#  )
-#} else if (file.exists(anomaly_plot_filename)){
-#  file.remove(anomaly_plot_filename)
-#}
+alert_name <- "new_measure_too_different_from_sp_growth_rate"
 
+# calculate growth rates for previous year by species
+# create a fall and spring survey dataset
+spring <- filter(dendroband_measurements_all_years, jday < 150 & year == previous_year)
+fall <- filter(dendroband_measurements_all_years, jday > 260 & year == previous_year)
+
+# merge spring and fall datasets based on ID number to isolate only trees with values in both censuses
+growth_rates <- inner_join(spring, fall, by = c("tag", "plot", "dend.num"))
+
+# calculate time difference and convert time from days to years
+time <- (growth_rates$jday.y-growth_rates$jday.x)/365
+
+# assign dend at time 1 (size1) and time 2 (size2)
+size2 <- growth_rates$dend.y
+size1 <- growth_rates$dend.x
+
+# calculate growth rates:
+growth_rates$annual_increment <- (size2 - size1)
+
+# group by species
+growth_sp <- growth_rates %>%
+  group_by(spp.x) %>%
+  summarize(growth_rate = mean(annual_increment, na.rm =TRUE),
+            upper = growth_rate + 3*sd(annual_increment, na.rm = TRUE),
+            lower = growth_rate - 3*sd(annual_increment, na.rm = TRUE),
+            n = n())
+
+spring <- filter(dendroband_measurements, jday < 150)
+other <- filter(dendroband_measurements, jday >= 150)
+# Get all stems to alert
+stems_to_alert <- other %>%
+  # Compute growth
+  left_join(spring, by = c("plot","tag", "dend.num"), relationship = "many-to-many")%>%
+  group_by(tag, plot) %>%
+  mutate(growth = dend.x - dend.y) %>%
+  filter(!is.na(growth)) %>%
+  slice(n()) %>%
+  # See if growth is in 99.7% confidence interval
+  left_join(growth_sp, by = "spp.x") %>%
+  mutate(measure_is_reasonable = between(growth, lower, upper)) %>%
+  filter(!measure_is_reasonable)
+
+# Append to report
+require_field_fix_error_file <- stems_to_alert %>%
+  mutate(alert_name = alert_name) %>%
+  select(alert_name, all_of(orig_master_data_var_names)) %>%
+  bind_rows(require_field_fix_error_file)
 
 
 ## Warning: Does dendroband needs fixing or replacing? ----
