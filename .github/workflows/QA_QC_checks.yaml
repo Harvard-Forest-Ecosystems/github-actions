@@ -8,13 +8,13 @@
 on:
   push:
     paths:
-      - 'data/**'
+      - 'new_data/**'
       - 'Rscripts/Generate_reports.R'
       - 'Rscripts/Generate_warnings.R'
       - 'README.Rmd'
   pull_request:
     paths:
-      - 'data/**'
+      - 'new_data/**'
       - 'Rscripts/Generate_reports.R'
       - 'Rscripts/Generate_warnings.R'
       - 'README.Rmd'
