@@ -1,4 +1,4 @@
-plot,tag,jday,year,spp,dend.num,ref.dend,ref.dbh,prev.dend,dend,dbh,notes,ref.notes
+plot,tag,jday,year,spp,dend.num,ref.dend,ref.dbh,prev.dend,dend,dbh,notes,ref.notes  
 A1,1,117,2022,yb,4,14.51,19.4,22.77,23.21,,,NA
 A1,2,117,2022,rm,2,10.43,35.3,16.22,16.82,,,NA
 A1,6,117,2022,rm,3,64.49,35.1,82.35,82.77,,,NA
