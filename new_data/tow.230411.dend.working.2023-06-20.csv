@@ -1,6 +1,6 @@
 plot,tag,jday,year,spp,dend.num,ref.dend,ref.dbh,prev.dend,dend,dbh,hole,status,Need New Band?,notes,ref.notes
 A1,1,102,2023,yb,4,14.51,19.4,19.37,260.04,,Inner,Alive,No,,NA
-A1,2,102,2023,rm,2,10.43,35.3,17.02,28.06,,Inner,Alive,No,,NA
+A1,2,102,2023,rm,2,10.43,35.3,17.02,280.06,,Inner,Alive,No,,NA
 A1,6,102,2023,rm,3,64.49,35.1,86.32,87.54,,Outer,Alive,No,"hole nearer spring: 60.77, 61.38",NA
 A1,6,102,2023,rm,3,,,60.77,61.38,,Inner,Alive,No,,
 A1,8,102,2023,yb,3,26.95,27.0,38.96,39.42,,Inner,Alive,No,,NA
