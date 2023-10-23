@@ -189,8 +189,8 @@ if(nrow(require_field_fix_error_file) != 0){
 }
 
 ## Warnings ----
-report_filepath <- here("testthat/reports/warnings/warnings_file.csv")
-trace_of_reports_filepath <- here("testthat/reports/trace_of_reports/warnings_file.csv")
+report_filepath <- here("~/testthat/reports/warnings/warnings_file.csv")
+trace_of_reports_filepath <- here("~/testthat/reports/trace_of_reports/warnings_file.csv")
 
 if(nrow(warning_file) != 0){
   # If any warnings exist:
