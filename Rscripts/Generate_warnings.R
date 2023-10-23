@@ -154,8 +154,8 @@ warning_file <- stems_to_alert %>%
 
 # Clean and save files ----
 ## Field fix errors ----
-report_filepath <- here("testthat/reports/requires_field_fix/require_field_fix_error_file.csv")
-trace_of_reports_filepath <- here("testthat/reports/trace_of_reports/require_field_fix_error_file.csv")
+report_filepath <- "testthat/reports/requires_field_fix/require_field_fix_error_file.csv"
+trace_of_reports_filepath <- "testthat/reports/trace_of_reports/require_field_fix_error_file.csv"
 
 if(nrow(require_field_fix_error_file) != 0){
   # If any field fix errors exist:
@@ -188,9 +188,9 @@ if(nrow(require_field_fix_error_file) != 0){
   }
 }
 
-## Warnings ----
-report_filepath <- here("testthat/reports/warnings/warnings_file.csv")
-trace_of_reports_filepath <- here("testthat/reports/trace_of_reports/warnings_file.csv")
+## Warnings ---
+report_filepath <- "~/testthat/reports/warnings/warnings_file.csv"
+trace_of_reports_filepath <- "~/testthat/reports/trace_of_reports/warnings_file.csv"
 
 if(nrow(warning_file) != 0){
   # If any warnings exist:
