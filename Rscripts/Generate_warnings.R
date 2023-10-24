@@ -147,78 +147,78 @@ warning_file <- stems_to_alert %>%
 
 
 
-
-
+# save report file
+write_csv(warning_file, "testthat/reports/trace_of_reports/require_field_fix_error_file.csv")
 
 
 
 # Clean and save files ----
 ## Field fix errors ----
-report_filepath <- "/Users/runner/work/github-actions/github-actions/testthat/reports/requires_field_fix/require_field_fix_error_file.csv"
-trace_of_reports_filepath <- "/Users/runner/work/github-actions/github-actions/testthat/reports/trace_of_reports/require_field_fix_error_file.csv"
+#report_filepath <- "/Users/runner/work/github-actions/github-actions/testthat/reports/requires_field_fix/require_field_fix_error_file.csv"
+#trace_of_reports_filepath <- "/Users/runner/work/github-actions/github-actions/testthat/reports/trace_of_reports/require_field_fix_error_file.csv"
 
-if(nrow(require_field_fix_error_file) != 0){
+#if(nrow(require_field_fix_error_file) != 0){
   # If any field fix errors exist:
 
   # Clean & sort report
-  require_field_fix_error_file <- require_field_fix_error_file %>%
-    filter(!is.na(tag)) %>%
-    arrange(plot, tag)
+#  require_field_fix_error_file <- require_field_fix_error_file %>%
+#    filter(!is.na(tag)) %>%
+#    arrange(plot, tag)
 
   # Write report
-  require_field_fix_error_file %>%
-    write_csv(file = report_filepath)
+#  require_field_fix_error_file %>%
+ #   write_csv(file = report_filepath)
 
   # Append report to trace of reports to keep track of all the issues
-  if(file.exists(trace_of_reports_filepath)){
-    trace_of_reports <- read_csv(file = trace_of_reports_filepath, show_col_types = FALSE)
-  } else {
-    trace_of_reports <- NULL
-  }
+#  if(file.exists(trace_of_reports_filepath)){
+#    trace_of_reports <- read_csv(file = trace_of_reports_filepath, show_col_types = FALSE)
+#  } else {
+#    trace_of_reports <- NULL
+#  }
 
-  trace_of_reports %>%
-    bind_rows(require_field_fix_error_file) %>%
-    distinct() %>%
-    write_csv(file = trace_of_reports_filepath)
+#  trace_of_reports %>%
+#    bind_rows(require_field_fix_error_file) %>%
+#    distinct() %>%
+#    write_csv(file = trace_of_reports_filepath)
 
-} else {
+#} else {
   # If no field fix errors exist, then delete previous report:
-  if(file.exists(report_filepath)) {
-    file.remove(report_filepath)
-  }
-}
+#  if(file.exists(report_filepath)) {
+#    file.remove(report_filepath)
+#  }
+#}
 
 ## Warnings ---
-report_filepath <- "/Users/runner/work/github-actions/github-actions/testthat/reports/warnings/warnings_file.csv"
-trace_of_reports_filepath <- "/Users/runner/work/github-actions/github-actions/testthat/reports/trace_of_reports/warnings_file.csv"
+#report_filepath <- "/Users/runner/work/github-actions/github-actions/testthat/reports/warnings/warnings_file.csv"
+#trace_of_reports_filepath <- "/Users/runner/work/github-actions/github-actions/testthat/reports/trace_of_reports/warnings_file.csv"
 
-if(nrow(warning_file) != 0){
+#if(nrow(warning_file) != 0){
   # If any warnings exist:
 
   # Clean & sort report
-  warning_file <- warning_file %>%
-    filter(!is.na(tag)) %>%
-    arrange(alert_name, tag)
+#  warning_file <- warning_file %>%
+#    filter(!is.na(tag)) %>%
+#    arrange(alert_name, tag)
 
   # Write report
-  warning_file %>%
-    write_csv(file = report_filepath)
+#  warning_file %>%
+#    write_csv(file = report_filepath)
 
   # Append report to trace of reports to keep track of all the issues
-  if(file.exists(trace_of_reports_filepath)){
-    trace_of_reports <- read_csv(file = trace_of_reports_filepath, show_col_types = FALSE)
-  } else {
-    trace_of_reports <- NULL
-  }
+#  if(file.exists(trace_of_reports_filepath)){
+#    trace_of_reports <- read_csv(file = trace_of_reports_filepath, show_col_types = FALSE)
+#  } else {
+#    trace_of_reports <- NULL
+#  }
 
-  trace_of_reports %>%
-    bind_rows(warning_file) %>%
-    distinct() %>%
-    write_csv(file = trace_of_reports_filepath)
+#  trace_of_reports %>%
+#    bind_rows(warning_file) %>%
+#    distinct() %>%
+#    write_csv(file = trace_of_reports_filepath)
 
-} else {
-  # If no warnings exist, then delete previous report:
-  if (file.exists(report_filepath)) {
-    file.remove(report_filepath)
-  }
-}
+#} else {
+#  # If no warnings exist, then delete previous report:
+#  if (file.exists(report_filepath)) {
+#    file.remove(report_filepath)
+#  }
+#}
